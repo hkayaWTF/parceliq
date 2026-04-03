@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ParcelIQ — AI Property Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --obsidian: #0c0c10;
+  --obsidian-mid: #141418;
+  --obsidian-light: #1e1e24;
+  --obsidian-border: #2a2a32;
+  --champagne: #c9a96e;
+  --champagne-light: #e8d5a8;
+  --champagne-pale: #f5edda;
+  --ivory: #f8f4ec;
+  --ivory-mid: #ede8dd;
+  --ivory-dark: #d8d0be;
+  --platinum: #9a9590;
+  --platinum-light: #b8b3ad;
+  --smoke: #6a6560;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--obsidian);color:var(--ivory);font-family:'Montserrat',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* COVER */
+.cover{min-height:100svh;background:var(--obsidian);display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.cover-glow-top{position:absolute;top:-200px;right:-100px;width:min(600px,100vw);height:min(600px,100vw);border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.12) 0%,transparent 65%);pointer-events:none;}
+.cover-glow-bottom{position:absolute;bottom:-150px;left:-150px;width:min(500px,80vw);height:min(500px,80vw);border-radius:50%;background:radial-gradient(circle,rgba(139,38,53,0.07) 0%,transparent 65%);pointer-events:none;}
+.cover-inner{position:relative;z-index:1;padding:clamp(32px,6vw,80px) clamp(24px,6vw,72px);display:flex;flex-direction:column;min-height:100svh;gap:clamp(40px,7vw,72px);}
+.logo-row{display:flex;align-items:center;gap:14px;}
+.logo-diamond{width:34px;height:34px;border:1.5px solid var(--champagne);transform:rotate(45deg);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-diamond span{transform:rotate(-45deg);font-family:'Cormorant Garamond';font-weight:500;color:var(--champagne);font-size:15px;line-height:1;}
+.logo-wordmark{font-family:'Montserrat';font-weight:600;font-size:clamp(15px,3vw,19px);letter-spacing:6px;color:var(--ivory);text-transform:uppercase;}
+.cover-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px;}
+.cover-eyebrow{display:flex;align-items:center;gap:14px;}
+.eyebrow-line{width:36px;height:1px;background:var(--champagne);opacity:0.55;}
+.eyebrow-text{font-family:'DM Mono';font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--champagne);font-weight:300;}
+.cover-h1{font-family:'Cormorant Garamond';font-weight:300;font-size:clamp(50px,12vw,118px);line-height:0.92;letter-spacing:-1px;color:var(--ivory);}
+.cover-h1 em{font-style:italic;color:var(--champagne);}
+.cover-tagline{font-size:clamp(12px,2.5vw,14px);font-weight:300;line-height:1.85;color:var(--platinum);max-width:480px;letter-spacing:0.2px;}
+.cover-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--obsidian-border);border:1px solid var(--obsidian-border);margin-top:8px;}
+.stat-cell{background:var(--obsidian-light);padding:clamp(14px,3vw,24px) clamp(10px,2.5vw,20px);display:flex;flex-direction:column;gap:4px;}
+.stat-num{font-family:'Cormorant Garamond';font-size:clamp(30px,6vw,52px);font-weight:300;color:var(--champagne);line-height:1;letter-spacing:-1px;}
+.stat-label{font-family:'DM Mono';font-size:clamp(8px,1.5vw,10px);letter-spacing:2px;text-transform:uppercase;color:var(--smoke);font-weight:300;}
+.cover-toc{border-top:1px solid var(--obsidian-border);padding-top:clamp(20px,4vw,36px);}
+.toc-lbl{font-family:'DM Mono';font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--smoke);margin-bottom:18px;display:block;}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+@media(min-width:640px){.toc-grid{grid-template-columns:repeat(5,1fr);}}
+.toc-item{padding:10px 0;border-bottom:1px solid var(--obsidian-border);display:flex;flex-direction:column;gap:3px;padding-right:12px;}
+.toc-num{font-family:'DM Mono';font-size:9px;color:var(--champagne);letter-spacing:1px;opacity:0.65;}
+.toc-name{font-size:clamp(9px,1.8vw,11px);font-weight:500;color:var(--ivory-dark);letter-spacing:0.3px;line-height:1.3;}
+
+/* SECTIONS */
+.sw{border-bottom:1px solid var(--obsidian-border);}
+.sw.sd{background:var(--obsidian-mid);}
+.sw.sdd{background:var(--obsidian-light);}
+.section{padding:clamp(56px,10vw,100px) clamp(24px,6vw,72px);max-width:1200px;margin:0 auto;width:100%;}
+.sh{display:flex;flex-direction:column;gap:12px;margin-bottom:clamp(36px,6vw,60px);}
+.stag{display:flex;align-items:center;gap:14px;}
+.tline{width:30px;height:1px;background:var(--champagne);opacity:0.45;}
+.ttxt{font-family:'DM Mono';font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--champagne);font-weight:300;}
+.stitle{font-family:'Cormorant Garamond';font-weight:300;font-size:clamp(34px,7vw,66px);line-height:1.0;color:var(--ivory);letter-spacing:-0.5px;}
+.stitle em{font-style:italic;color:var(--champagne);}
+p.bt{font-size:clamp(13px,2.5vw,15px);font-weight:300;line-height:1.85;color:var(--platinum);margin-bottom:18px;max-width:740px;}
+
+/* PROBLEM GRID */
+.pgrid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--obsidian-border);border:1px solid var(--obsidian-border);margin:clamp(24px,5vw,44px) 0;}
+@media(min-width:540px){.pgrid{grid-template-columns:1fr 1fr;}}
+@media(min-width:900px){.pgrid{grid-template-columns:repeat(3,1fr);}}
+.pcard{background:var(--obsidian-light);padding:clamp(22px,4vw,34px);display:flex;flex-direction:column;gap:10px;}
+.picon{font-size:20px;line-height:1;}
+.ptitle{font-family:'Cormorant Garamond';font-size:clamp(17px,3vw,21px);font-weight:500;color:var(--ivory);line-height:1.2;}
+.pbody{font-size:clamp(11px,2vw,13px);font-weight:300;color:var(--platinum);line-height:1.7;flex:1;}
+.ppain{font-family:'DM Mono';font-size:10px;letter-spacing:1.5px;color:var(--champagne);opacity:0.75;padding-top:10px;border-top:1px solid var(--obsidian-border);}
+
+/* QUOTE */
+.lquote{border-left:2px solid var(--champagne);padding:clamp(22px,4vw,38px) clamp(22px,4vw,44px);margin:clamp(24px,5vw,44px) 0;background:var(--obsidian-light);position:relative;overflow:hidden;}
+.lquote::before{content:'\201C';font-family:'Cormorant Garamond';font-size:clamp(80px,15vw,160px);color:var(--champagne);opacity:0.07;position:absolute;top:-20px;left:14px;line-height:1;pointer-events:none;}
+.lquote blockquote{font-family:'Cormorant Garamond';font-size:clamp(17px,3.5vw,25px);font-weight:400;font-style:italic;color:var(--ivory);line-height:1.55;position:relative;z-index:1;}
+.lquote cite{display:block;margin-top:14px;font-family:'DM Mono';font-size:10px;letter-spacing:2px;color:var(--champagne);font-style:normal;position:relative;z-index:1;}
+
+/* FLOW */
+.flow{display:flex;flex-direction:column;gap:1px;background:var(--obsidian-border);border:1px solid var(--obsidian-border);margin:clamp(24px,5vw,44px) 0;}
+@media(min-width:700px){.flow{flex-direction:row;}}
+.fstep{background:var(--obsidian-light);padding:clamp(18px,3vw,26px) clamp(14px,2.5vw,22px);flex:1;display:flex;flex-direction:column;gap:8px;position:relative;}
+@media(min-width:700px){.fstep::after{content:'';position:absolute;right:-7px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:7px solid var(--champagne);opacity:0.35;z-index:2;}.fstep:last-child::after{display:none;}}
+.fnum{font-family:'DM Mono';font-size:9px;letter-spacing:2px;color:var(--champagne);opacity:0.55;}
+.ficon{font-size:18px;line-height:1;}
+.ftitle{font-size:clamp(11px,2vw,13px);font-weight:600;color:var(--ivory);letter-spacing:0.3px;line-height:1.3;}
+.fdesc{font-size:clamp(10px,1.8vw,11px);font-weight:300;color:var(--platinum);line-height:1.55;}
+
+/* CALLOUT */
+.callout{border:1px solid rgba(201,169,110,0.28);border-left:3px solid var(--champagne);background:rgba(201,169,110,0.04);padding:clamp(16px,3vw,26px);margin:clamp(20px,4vw,36px) 0;}
+.clbl{font-family:'DM Mono';font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--champagne);margin-bottom:8px;display:block;font-weight:300;}
+.callout p{font-size:clamp(12px,2.2vw,14px);font-weight:300;line-height:1.75;color:var(--ivory-dark);}
+.callout strong{font-weight:500;color:var(--ivory);}
+
+/* ORCHESTRATOR */
+.orchbox{background:var(--obsidian-light);border:1px solid var(--obsidian-border);border-top:3px solid var(--champagne);padding:clamp(22px,4vw,34px);margin-bottom:clamp(24px,5vw,44px);}
+.orc-ey{font-family:'DM Mono';font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--champagne);margin-bottom:10px;display:block;font-weight:300;}
+.orc-title{font-family:'Cormorant Garamond';font-size:clamp(22px,4vw,34px);font-weight:400;color:var(--ivory);margin-bottom:12px;line-height:1.1;}
+.orc-body{font-size:clamp(12px,2vw,13px);font-weight:300;color:var(--platinum);line-height:1.75;margin-bottom:16px;}
+.ttags{display:flex;flex-wrap:wrap;gap:7px;padding-top:14px;border-top:1px solid var(--obsidian-border);}
+.ttag{font-family:'DM Mono';font-size:9px;letter-spacing:1.5px;padding:3px 9px;background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.18);color:var(--champagne);font-weight:300;}
+
+/* AGENT CARDS */
+.aglist{display:flex;flex-direction:column;gap:clamp(14px,3vw,22px);}
+.agcard{border:1px solid var(--obsidian-border);border-left:3px solid;background:var(--obsidian-light);overflow:hidden;}
+.agcard:nth-child(1){border-left-color:var(--champagne);}
+.agcard:nth-child(2){border-left-color:#4a7aaa;}
+.agcard:nth-child(3){border-left-color:#5a9a6a;}
+.agcard:nth-child(4){border-left-color:#7a5a9a;}
+.agcard:nth-child(5){border-left-color:#c9a96e;}
+.agcard:nth-child(6){border-left-color:#4a9a9a;}
+.aghead{padding:clamp(14px,3vw,22px) clamp(18px,3vw,26px);display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--obsidian-border);flex-wrap:wrap;}
+.agnum{font-family:'DM Mono';font-size:9px;letter-spacing:2px;color:var(--smoke);padding-top:4px;white-space:nowrap;}
+.agname{font-family:'Cormorant Garamond';font-size:clamp(17px,3.5vw,23px);font-weight:500;color:var(--ivory);flex:1;line-height:1.2;}
+.agbadge{font-family:'DM Mono';font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border:1px solid var(--obsidian-border);color:var(--platinum-light);background:var(--obsidian);white-space:nowrap;font-weight:300;}
+.agbody{padding:clamp(14px,3vw,22px) clamp(18px,3vw,26px);display:flex;flex-direction:column;gap:14px;}
+.agtasks{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.agtasks li{font-size:clamp(11px,2vw,13px);font-weight:300;color:var(--platinum);line-height:1.6;padding-left:16px;position:relative;}
+.agtasks li::before{content:'·';position:absolute;left:3px;color:var(--champagne);font-size:16px;line-height:1.25;opacity:0.55;}
+.agapis{display:flex;flex-wrap:wrap;gap:5px;padding-top:12px;border-top:1px solid var(--obsidian-border);}
+.atag{font-family:'DM Mono';font-size:9px;letter-spacing:1px;padding:3px 7px;background:var(--obsidian);border:1px solid var(--obsidian-border);color:var(--platinum-light);font-weight:300;}
+.agout{font-family:'DM Mono';font-size:10px;color:var(--champagne);letter-spacing:0.5px;line-height:1.6;font-weight:300;}
+.agout .ol{opacity:0.55;margin-right:4px;}
+
+/* SOURCES */
+.sgrid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--obsidian-border);border:1px solid var(--obsidian-border);margin-top:clamp(24px,5vw,44px);}
+@media(min-width:540px){.sgrid{grid-template-columns:1fr 1fr;}}
+@media(min-width:900px){.sgrid{grid-template-columns:repeat(4,1fr);}}
+.scard{background:var(--obsidian-light);padding:clamp(18px,3vw,26px);}
+.scat{font-family:'DM Mono';font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--champagne);margin-bottom:9px;display:block;opacity:0.75;}
+.stitle2{font-family:'Cormorant Garamond';font-size:clamp(15px,2.5vw,18px);font-weight:500;color:var(--ivory);margin-bottom:11px;line-height:1.2;}
+.slist{list-style:none;display:flex;flex-direction:column;gap:3px;}
+.slist li{font-family:'DM Mono';font-size:clamp(9px,1.6vw,10px);color:var(--smoke);letter-spacing:0.3px;line-height:1.5;font-weight:300;}
+
+/* REPORT MOCKUP */
+.rmock{border:1px solid var(--obsidian-border);background:var(--obsidian-light);margin:clamp(24px,5vw,44px) 0;box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(201,169,110,0.08);}
+.rtop{background:var(--champagne);padding:clamp(16px,3vw,26px) clamp(18px,3.5vw,30px);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.rttitle{font-family:'Montserrat';font-weight:700;font-size:clamp(10px,2.2vw,13px);letter-spacing:2px;text-transform:uppercase;color:var(--obsidian);}
+.rtsub{font-family:'DM Mono';font-size:clamp(8px,1.5vw,10px);color:rgba(12,12,16,0.55);letter-spacing:0.5px;font-weight:300;margin-top:3px;}
+.rtpages{font-family:'Cormorant Garamond';font-size:clamp(30px,5vw,46px);font-weight:300;color:var(--obsidian);line-height:1;}
+.rsgrid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--obsidian-border);}
+@media(min-width:540px){.rsgrid{grid-template-columns:1fr 1fr;}}
+@media(min-width:900px){.rsgrid{grid-template-columns:repeat(3,1fr);}}
+.rscard{background:var(--obsidian-light);padding:clamp(16px,3vw,26px);position:relative;overflow:hidden;}
+.rsbgn{position:absolute;top:2px;right:6px;font-family:'Cormorant Garamond';font-size:clamp(44px,7vw,68px);font-weight:300;color:rgba(201,169,110,0.05);line-height:1;pointer-events:none;}
+.rstitle{font-size:clamp(11px,2vw,13px);font-weight:600;color:var(--ivory);margin-bottom:9px;letter-spacing:0.3px;position:relative;z-index:1;padding-right:22px;}
+.rsitems{list-style:none;display:flex;flex-direction:column;gap:3px;position:relative;z-index:1;}
+.rsitems li{font-size:clamp(10px,1.8vw,11px);font-weight:300;color:var(--smoke);line-height:1.45;padding-left:10px;position:relative;}
+.rsitems li::before{content:'—';position:absolute;left:0;color:var(--champagne);opacity:0.28;font-size:9px;}
+
+/* STACK TABLE */
+.stwrap{margin:clamp(24px,5vw,44px) 0;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--obsidian-border);}
+.sttable{width:100%;border-collapse:collapse;min-width:520px;}
+.sttable thead tr{background:var(--obsidian-mid);}
+.sttable th{text-align:left;font-family:'DM Mono';font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--smoke);padding:13px 16px;font-weight:300;border-bottom:1px solid var(--obsidian-border);white-space:nowrap;}
+.sttable td{padding:13px 16px;font-size:clamp(11px,2vw,13px);font-weight:300;border-bottom:1px solid var(--obsidian-border);vertical-align:top;line-height:1.6;background:var(--obsidian-light);}
+.sttable tbody tr:hover td{background:#242430;}
+.sttable td:first-child{font-family:'DM Mono';font-size:10px;letter-spacing:1px;color:var(--champagne);white-space:nowrap;font-weight:300;width:130px;}
+.sttable td:nth-child(2){font-weight:500;color:var(--ivory);white-space:nowrap;}
+.sttable td:nth-child(3){color:var(--platinum);}
+
+/* PHASES */
+.phgrid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--obsidian-border);border:1px solid var(--obsidian-border);margin:clamp(24px,5vw,44px) 0;}
+@media(min-width:700px){.phgrid{grid-template-columns:repeat(3,1fr);}}
+.phcard{background:var(--obsidian-light);padding:clamp(22px,4vw,38px) clamp(18px,3.5vw,30px);position:relative;overflow:hidden;}
+.phcard.phactive{background:var(--champagne);}
+.phbgn{font-family:'Cormorant Garamond';font-size:clamp(72px,14vw,110px);font-weight:300;line-height:1;margin-bottom:6px;color:rgba(255,255,255,0.05);letter-spacing:-4px;}
+.phcard.phactive .phbgn{color:rgba(12,12,16,0.10);}
+.phey{font-family:'DM Mono';font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--champagne);margin-bottom:7px;display:block;font-weight:300;}
+.phcard.phactive .phey{color:rgba(12,12,16,0.45);}
+.phtitle{font-family:'Cormorant Garamond';font-size:clamp(20px,4vw,28px);font-weight:500;margin-bottom:18px;color:var(--ivory);line-height:1.1;}
+.phcard.phactive .phtitle{color:var(--obsidian);}
+.phitems{list-style:none;display:flex;flex-direction:column;}
+.phitems li{font-size:clamp(11px,2vw,12px);font-weight:300;color:var(--platinum);padding:6px 0;border-bottom:1px solid var(--obsidian-border);line-height:1.45;}
+.phcard.phactive .phitems li{color:rgba(12,12,16,0.6);border-color:rgba(12,12,16,0.12);}
+.phtl{margin-top:18px;font-family:'DM Mono';font-size:10px;letter-spacing:2px;color:var(--champagne);font-weight:300;}
+.phcard.phactive .phtl{color:var(--obsidian);opacity:0.45;}
+
+/* TWO COL */
+.twocol{display:grid;grid-template-columns:1fr;gap:clamp(24px,5vw,44px);margin:clamp(24px,5vw,44px) 0;}
+@media(min-width:700px){.twocol{grid-template-columns:1fr 1fr;}}
+.clbl{font-family:'DM Mono';font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--champagne);margin-bottom:11px;display:block;opacity:0.75;font-weight:300;}
+
+/* PRICING */
+.prgrid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--obsidian-border);border:1px solid var(--obsidian-border);margin:clamp(24px,5vw,44px) 0;}
+@media(min-width:540px){.prgrid{grid-template-columns:1fr 1fr;}}
+@media(min-width:900px){.prgrid{grid-template-columns:repeat(4,1fr);}}
+.tiercard{background:var(--obsidian-light);padding:clamp(22px,4vw,34px) clamp(18px,3.5vw,26px);display:flex;flex-direction:column;}
+.tiercard.trf{background:var(--champagne);}
+.tirey{font-family:'DM Mono';font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--champagne);margin-bottom:13px;display:block;font-weight:300;}
+.tiercard.trf .tirey{color:rgba(12,12,16,0.45);}
+.tiername{font-family:'Cormorant Garamond';font-size:clamp(19px,3.5vw,25px);font-weight:500;color:var(--ivory);margin-bottom:6px;line-height:1.1;}
+.tiercard.trf .tiername{color:var(--obsidian);}
+.tierprice{font-family:'Cormorant Garamond';font-size:clamp(42px,8vw,62px);font-weight:300;color:var(--champagne);line-height:1;margin-bottom:3px;letter-spacing:-2px;}
+.tiercard.trf .tierprice{color:var(--obsidian);}
+.tierunit{font-family:'DM Mono';font-size:9px;letter-spacing:1.5px;color:var(--smoke);margin-bottom:20px;font-weight:300;}
+.tiercard.trf .tierunit{color:rgba(12,12,16,0.4);}
+.tierlist{list-style:none;display:flex;flex-direction:column;gap:0;flex:1;}
+.tierlist li{font-size:clamp(11px,2vw,12px);font-weight:300;color:var(--platinum);padding:7px 0;border-bottom:1px solid var(--obsidian-border);line-height:1.4;}
+.tiercard.trf .tierlist li{color:rgba(12,12,16,0.6);border-color:rgba(12,12,16,0.1);}
+
+/* MARKET STATS */
+.mstats{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,4vw,36px);margin:clamp(24px,5vw,44px) 0;}
+@media(min-width:700px){.mstats{grid-template-columns:repeat(4,1fr);}}
+.mstat{border-top:1px solid var(--champagne);padding-top:14px;display:flex;flex-direction:column;gap:5px;}
+.msnum{font-family:'Cormorant Garamond';font-size:clamp(34px,6vw,54px);font-weight:300;color:var(--ivory);line-height:1;letter-spacing:-1px;}
+.msdesc{font-size:clamp(10px,1.8vw,12px);font-weight:300;color:var(--smoke);line-height:1.5;}
+
+/* RISK TABLE */
+.riskwrap{margin:clamp(24px,5vw,44px) 0;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--obsidian-border);}
+.risktbl{width:100%;border-collapse:collapse;min-width:580px;}
+.risktbl th{text-align:left;font-family:'DM Mono';font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--smoke);padding:11px 14px;background:var(--obsidian-mid);border-bottom:1px solid var(--obsidian-border);font-weight:300;}
+.risktbl td{padding:13px 14px;font-size:clamp(11px,2vw,13px);font-weight:300;border-bottom:1px solid var(--obsidian-border);vertical-align:top;line-height:1.6;background:var(--obsidian-light);color:var(--platinum);}
+.risktbl tbody tr:hover td{background:#242430;}
+.rlbl{display:inline-block;padding:2px 9px;font-family:'DM Mono';font-size:8px;letter-spacing:1.5px;text-transform:uppercase;font-weight:300;}
+.rlbl.h{background:rgba(139,38,53,0.18);color:#e87a8a;border:1px solid rgba(139,38,53,0.35);}
+.rlbl.m{background:rgba(201,169,110,0.1);color:var(--champagne-light);border:1px solid rgba(201,169,110,0.28);}
+.rlbl.l{background:rgba(58,90,74,0.18);color:#7ab89a;border:1px solid rgba(58,90,74,0.35);}
+
+/* FUNDS */
+.fndlist{list-style:none;border:1px solid var(--obsidian-border);overflow:hidden;margin-top:11px;}
+.fndlist li{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-bottom:1px solid var(--obsidian-border);font-size:clamp(11px,2vw,13px);font-weight:300;color:var(--platinum);background:var(--obsidian-light);gap:14px;}
+.fndlist li:hover{background:#242430;}
+.fndlist li:last-child{border-bottom:none;}
+.fndamt{font-family:'DM Mono';font-size:clamp(10px,1.8vw,12px);color:var(--champagne);white-space:nowrap;font-weight:400;}
+
+/* MILESTONES */
+.mstones{list-style:none;border:1px solid var(--obsidian-border);overflow:hidden;margin-top:11px;}
+.mstone{display:flex;align-items:flex-start;gap:14px;padding:clamp(13px,2.5vw,18px) clamp(14px,3vw,22px);border-bottom:1px solid var(--obsidian-border);background:var(--obsidian-light);}
+.mstone:last-child{border-bottom:none;}
+.msmo{font-family:'DM Mono';font-size:9px;letter-spacing:1.5px;color:var(--champagne);white-space:nowrap;padding-top:2px;font-weight:300;min-width:58px;}
+.mstxt{font-size:clamp(11px,2vw,13px);font-weight:300;color:var(--platinum);line-height:1.5;}
+.mstxt strong{font-weight:500;color:var(--ivory);}
+
+/* HR */
+hr.rule{border:none;border-top:1px solid var(--obsidian-border);margin:clamp(24px,5vw,44px) 0;}
+
+/* SCROLL HINT */
+.scrl{font-family:'DM Mono';font-size:9px;letter-spacing:2px;color:var(--smoke);text-transform:uppercase;margin-bottom:6px;display:none;}
+@media(max-width:640px){.scrl{display:block;}}
+
+/* CLOSING */
+.closing{padding:clamp(60px,12vw,120px) clamp(24px,6vw,72px);text-align:center;position:relative;overflow:hidden;background:var(--obsidian);}
+.cglow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(800px,100vw);height:min(800px,100vw);border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.06) 0%,transparent 65%);pointer-events:none;}
+.cwm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Cormorant Garamond';font-size:clamp(70px,20vw,210px);font-weight:300;color:rgba(201,169,110,0.025);white-space:nowrap;letter-spacing:16px;pointer-events:none;}
+.cinner{position:relative;z-index:1;max-width:720px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:clamp(18px,4vw,30px);}
+.crule{width:56px;height:1px;background:var(--champagne);opacity:0.35;}
+.ch2{font-family:'Cormorant Garamond';font-size:clamp(30px,7vw,62px);font-weight:300;line-height:1.1;color:var(--ivory);letter-spacing:-0.5px;}
+.ch2 em{font-style:italic;color:var(--champagne);}
+.cp{font-size:clamp(13px,2.2vw,15px);font-weight:300;line-height:1.85;color:var(--platinum);max-width:540px;}
+.cbtns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
+.btng{padding:clamp(11px,2vw,15px) clamp(26px,5vw,42px);background:var(--champagne);color:var(--obsidian);font-family:'Montserrat';font-weight:600;font-size:clamp(10px,1.8vw,12px);letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;transition:background .25s;}
+.btng:hover{background:var(--champagne-light);}
+.btno{padding:clamp(11px,2vw,15px) clamp(26px,5vw,42px);background:transparent;color:var(--ivory);font-family:'Montserrat';font-weight:500;font-size:clamp(10px,1.8vw,12px);letter-spacing:3px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.18);cursor:pointer;transition:border-color .25s,color .25s;}
+.btno:hover{border-color:var(--champagne);color:var(--champagne);}
+
+/* ANIMATIONS */
+@media(prefers-reduced-motion:no-preference){
+  .cover-inner>*{animation:fadeUp .8s ease both;}
+  .cover-inner>*:nth-child(1){animation-delay:.1s;}
+  .cover-inner>*:nth-child(2){animation-delay:.28s;}
+  .cover-inner>*:nth-child(3){animation-delay:.46s;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-glow-top"></div>
+  <div class="cover-glow-bottom"></div>
+  <div class="cover-inner">
+    <div class="logo-row">
+      <div class="logo-diamond"><span>P</span></div>
+      <span class="logo-wordmark">ParcelIQ</span>
+    </div>
+    <div class="cover-body">
+      <div class="cover-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Investor Architecture Brief · 2026</span>
+      </div>
+      <h1 class="cover-h1">Every<br/>Property.<br/><em>Every<br/>Answer.</em></h1>
+      <p class="cover-tagline">A multi-agent AI platform that accepts a single property address and delivers a complete zoning analysis, environmental report, variance opportunities, and conceptual design package — in under 15 minutes.</p>
+      <div class="cover-stats">
+        <div class="stat-cell"><span class="stat-num">6</span><span class="stat-label">AI Agents</span></div>
+        <div class="stat-cell"><span class="stat-num">50+</span><span class="stat-label">Page Report</span></div>
+        <div class="stat-cell"><span class="stat-num">15′</span><span class="stat-label">Delivery</span></div>
+      </div>
+    </div>
+    <div class="cover-toc">
+      <span class="toc-lbl">// Contents</span>
+      <div class="toc-grid">
+        <div class="toc-item"><span class="toc-num">§01</span><span class="toc-name">The Problem</span></div>
+        <div class="toc-item"><span class="toc-num">§02</span><span class="toc-name">The Solution</span></div>
+        <div class="toc-item"><span class="toc-num">§03</span><span class="toc-name">Agent Architecture</span></div>
+        <div class="toc-item"><span class="toc-num">§04</span><span class="toc-name">Data Sources</span></div>
+        <div class="toc-item"><span class="toc-num">§05</span><span class="toc-name">The Deliverable</span></div>
+        <div class="toc-item"><span class="toc-num">§06</span><span class="toc-name">Tech Stack</span></div>
+        <div class="toc-item"><span class="toc-num">§07</span><span class="toc-name">Build Roadmap</span></div>
+        <div class="toc-item"><span class="toc-num">§08</span><span class="toc-name">Business Model</span></div>
+        <div class="toc-item"><span class="toc-num">§09</span><span class="toc-name">Risk & Mitigation</span></div>
+        <div class="toc-item"><span class="toc-num">§10</span><span class="toc-name">The Ask</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- §1 PROBLEM -->
+<div class="sw"><div class="section" id="s1">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 01</span></div><h2 class="stitle">The <em>Problem</em></h2></div>
+  <p class="bt">When a real estate agent, developer, architect, or homebuyer wants to understand what they can actually do with a property, they face weeks of manual research, consultant fees, and dead ends. The information exists — scattered across dozens of municipal databases, federal portals, and county records — but nobody has assembled it into one intelligent, actionable package.</p>
+  <div class="pgrid">
+    <div class="pcard"><span class="picon">🏛️</span><div class="ptitle">Zoning Research is Fragmented</div><p class="pbody">Every municipality has its own zoning code. Some are digital. Many are scanned PDFs from the 1980s. An attorney charges thousands just to interpret them for a single parcel.</p><span class="ppain">$2,000–$8,000 per parcel</span></div>
+    <div class="pcard"><span class="picon">⏱️</span><div class="ptitle">Timelines Are Brutal</div><p class="pbody">A full due-diligence report on a commercial property takes 3–6 weeks between lawyers, environmental consultants, architects, and title companies. Deals fall apart waiting.</p><span class="ppain">3–6 weeks average</span></div>
+    <div class="pcard"><span class="picon">🧱</span><div class="ptitle">Small Buyers Are Left Out</div><p class="pbody">A family buying their first home has no access to the research a developer would commission. They discover flood zones, historic restrictions, or setback issues after signing.</p><span class="ppain">Zero access to professional intelligence</span></div>
+    <div class="pcard"><span class="picon">🗺️</span><div class="ptitle">Design Potential Never Visualized</div><p class="pbody">Even professionals rarely commission conceptual design during due diligence. Buyers have no visual sense of what a property could become before committing capital.</p><span class="ppain">Invisible opportunity cost</span></div>
+    <div class="pcard"><span class="picon">⚠️</span><div class="ptitle">Variances Go Unidentified</div><p class="pbody">Most buyers never learn that a restriction has a variance pathway — a formal legal process to obtain an exception. Attorneys know. Everyone else doesn't. Millions lost.</p><span class="ppain">Unknown variance opportunities</span></div>
+    <div class="pcard"><span class="picon">📋</span><div class="ptitle">No Single Source of Truth</div><p class="pbody">FEMA, EPA, the county assessor, historic preservation, wetlands — each is a separate portal. Nobody aggregates all of this for a single address. Until now.</p><span class="ppain">20+ siloed databases</span></div>
+  </div>
+  <div class="lquote"><blockquote>We paid $4,500 to an attorney to tell us the property had a conservation easement. That information was in the county records the entire time — we just didn't know to look.</blockquote><cite>— Real estate developer, 2024 industry survey</cite></div>
+</div></div>
+
+<!-- §2 SOLUTION -->
+<div class="sw sd"><div class="section" id="s2">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 02</span></div><h2 class="stitle">The <em>Solution</em></h2></div>
+  <p class="bt">ParcelIQ is a multi-agent AI platform. A user types in a property address and their email. That's it. Within 15 minutes, a comprehensive intelligence report lands in their inbox as a polished PDF — zoning analysis, environmental flags, legal constraints, variance opportunities, and AI-generated conceptual designs, all in one document.</p>
+  <div class="flow">
+    <div class="fstep"><span class="fnum">01</span><span class="ficon">📍</span><div class="ftitle">Address Input</div><p class="fdesc">User submits address + email. No account needed.</p></div>
+    <div class="fstep"><span class="fnum">02</span><span class="ficon">🧠</span><div class="ftitle">Orchestrator Fires</div><p class="fdesc">Master agent geocodes, identifies jurisdiction, dispatches sub-agents.</p></div>
+    <div class="fstep"><span class="fnum">03</span><span class="ficon">⚡</span><div class="ftitle">Parallel Research</div><p class="fdesc">6 specialized agents work simultaneously.</p></div>
+    <div class="fstep"><span class="fnum">04</span><span class="ficon">🖊️</span><div class="ftitle">Report Assembly</div><p class="fdesc">Synthesis agent compiles findings into structured narrative.</p></div>
+    <div class="fstep"><span class="fnum">05</span><span class="ficon">🎨</span><div class="ftitle">Design Generation</div><p class="fdesc">AI renders conceptual designs informed by zoning constraints.</p></div>
+    <div class="fstep"><span class="fnum">06</span><span class="ficon">📧</span><div class="ftitle">PDF Delivery</div><p class="fdesc">50-page report emailed within 15 minutes.</p></div>
+  </div>
+  <div class="callout"><span class="clbl">Core Value Proposition</span><p>What currently costs <strong>$3,000–$10,000</strong> and takes <strong>3–6 weeks</strong>, ParcelIQ delivers for <strong>$49–$299</strong> in under <strong>15 minutes.</strong></p></div>
+</div></div>
+
+<!-- §3 AGENTS -->
+<div class="sw"><div class="section" id="s3">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 03</span></div><h2 class="stitle">Agent <em>Architecture</em></h2></div>
+  <p class="bt">Hub-and-spoke model. One orchestrator receives the address, validates and geocodes it, then dispatches six specialized sub-agents to work in parallel. Each is purpose-built with its own toolset and API access, returning structured JSON for final synthesis.</p>
+  <div class="orchbox">
+    <span class="orc-ey">// Layer Zero — Orchestrator</span>
+    <div class="orc-title">The Master Controller</div>
+    <p class="orc-body">Receives raw input, geocodes via Google Maps API, validates the parcel, determines jurisdiction (city, county, state), and dispatches all sub-agents simultaneously via async task queue. Collects all outputs, detects conflicts or gaps, triggers retry logic on failure, and hands the full dataset to the Synthesis Agent for narrative generation.</p>
+    <div class="ttags"><span class="ttag">LangGraph / CrewAI</span><span class="ttag">Python Async / FastAPI</span><span class="ttag">Redis + Celery</span><span class="ttag">Google Maps API</span><span class="ttag">Regrid / ATTOM Parcel API</span></div>
+  </div>
+  <div class="aglist">
+    <div class="agcard">
+      <div class="aghead"><span class="agnum">AGENT 01</span><span class="agname">Zoning Intelligence Agent</span><span class="agbadge">Core</span></div>
+      <div class="agbody">
+        <ul class="agtasks"><li>Identify current zoning classification (R1, C2, M1, etc.) with full plain-language definition</li><li>Pull all permitted uses by-right: residential, commercial, mixed-use, ADU, accessory structures</li><li>Pull all conditional uses requiring special permit approval</li><li>Extract dimensional standards: setbacks (front/rear/side), max height, FAR, lot coverage, parking minimums</li><li>Identify overlay zones: historic, coastal, transit corridor, flood, conservation</li><li>Flag any non-conforming use status on current structures</li><li>Identify variance pathways: which rules can be appealed, to which board, with what legal criteria</li><li>Research recent variance approvals in same zone as precedent evidence</li></ul>
+        <div class="agapis"><span class="atag">Regrid API</span><span class="atag">Zoneomics API</span><span class="atag">OpenZoning</span><span class="atag">Municipal GIS Portals</span><span class="atag">State Zoning DBs</span><span class="atag">Web Scraping (fallback)</span><span class="atag">RAG on PDF Zoning Codes</span></div>
+        <div class="agout"><span class="ol">OUTPUT →</span> zoning_classification, permitted_uses[], dimensional_standards{}, variance_opportunities[], overlay_zones[]</div>
+      </div>
+    </div>
+    <div class="agcard">
+      <div class="aghead"><span class="agnum">AGENT 02</span><span class="agname">Environmental & Federal Compliance Agent</span><span class="agbadge">Core</span></div>
+      <div class="agbody">
+        <ul class="agtasks"><li>FEMA flood zone determination — exact designation (AE, X, VE, etc.) and Base Flood Elevation</li><li>Check if property is in a Special Flood Hazard Area (SFHA) — triggers mandatory flood insurance</li><li>EPA Envirofacts — brownfields, Superfund proximity, hazardous waste sites within 1-mile radius</li><li>National Wetlands Inventory — identify any wetland delineations on or adjacent to parcel</li><li>US Fish & Wildlife IPAC — check for Endangered Species Act habitat designations near parcel</li><li>USDA Web Soil Survey — soil type, percolation rate, buildability classification</li><li>FAA airspace restrictions — flight path overlays, proximity to airports</li><li>Radon zone designation by county (EPA map)</li></ul>
+        <div class="agapis"><span class="atag">FEMA MSC API</span><span class="atag">EPA Envirofacts API</span><span class="atag">FWS IPAC API</span><span class="atag">USDA Soil API</span><span class="atag">NWI Mapper API</span><span class="atag">FAA API</span></div>
+        <div class="agout"><span class="ol">OUTPUT →</span> flood_zone{}, environmental_flags[], wetlands_present, soil_classification, federal_restrictions[]</div>
+      </div>
+    </div>
+    <div class="agcard">
+      <div class="aghead"><span class="agnum">AGENT 03</span><span class="agname">Property History & Legal Records Agent</span><span class="agbadge">Core</span></div>
+      <div class="agbody">
+        <ul class="agtasks"><li>Full property tax record: assessed value, tax history, owner of record, parcel ID</li><li>Deed restrictions and CC&Rs (covenants, conditions & restrictions)</li><li>Easements: utility, access, drainage, conservation easements mapped on parcel</li><li>Historic preservation status: local landmark, state register, National Register of Historic Places</li><li>Active code violations, building department complaints, or open permits</li><li>Permit history: what has been built, permitted, or demolished in last 20 years</li><li>Publicly available liens or encumbrances</li><li>HOA status and basic HOA restrictions if applicable</li></ul>
+        <div class="agapis"><span class="atag">ATTOM Data API</span><span class="atag">County Assessor APIs</span><span class="atag">NRHP API (Historic)</span><span class="atag">BuildingPermits.io</span><span class="atag">CoreLogic</span><span class="atag">First American DataTree</span></div>
+        <div class="agout"><span class="ol">OUTPUT →</span> tax_record{}, deed_restrictions[], easements[], historic_status{}, permit_history[], violations[]</div>
+      </div>
+    </div>
+    <div class="agcard">
+      <div class="aghead"><span class="agnum">AGENT 04</span><span class="agname">Market Intelligence Agent</span><span class="agbadge">Value-Add</span></div>
+      <div class="agbody">
+        <ul class="agtasks"><li>Comparable sales (comps) within ½ mile, same zoning classification, last 12 months</li><li>Current estimated market value + value per square foot + value per buildable unit</li><li>Highest-and-best-use analysis based on zoning rights versus current use</li><li>Under-improvement flag: is current use below what zoning legally allows?</li><li>Neighborhood demographic trends: population growth, median income, employment base</li><li>Residential rental market data: vacancy rates, median rent, estimated cap rates</li><li>Commercial market data if applicable: office/retail vacancy, asking rents per SF</li><li>Walkability score, transit score, bike score</li></ul>
+        <div class="agapis"><span class="atag">Zillow API</span><span class="atag">Redfin API</span><span class="atag">CoStar (commercial)</span><span class="atag">ATTOM Market Trends</span><span class="atag">Walk Score API</span><span class="atag">US Census ACS API</span></div>
+        <div class="agout"><span class="ol">OUTPUT →</span> estimated_value{}, comps[], highest_best_use{}, under_improved_flag, market_trends{}</div>
+      </div>
+    </div>
+    <div class="agcard">
+      <div class="aghead"><span class="agnum">AGENT 05</span><span class="agname">Infrastructure & Utility Agent</span><span class="agbadge">Value-Add</span></div>
+      <div class="agbody">
+        <ul class="agtasks"><li>Water and sewer availability: public connection status, proximity to mains, capacity flags</li><li>Septic determination — and whether improvements are required for any new use</li><li>Electric and gas utility providers and any known capacity constraints in the service area</li><li>Broadband availability and speed tiers (FCC National Broadband Map)</li><li>Road access: public vs. private road, traffic counts on adjacent streets</li><li>School district assignment — high relevance for residential valuation</li><li>Fire district, police jurisdiction, published response time data</li><li>Proximity to transit: bus stops, rail stations, protected bike lanes</li></ul>
+        <div class="agapis"><span class="atag">FCC Broadband API</span><span class="atag">GreatSchools API</span><span class="atag">TIGER/Line Roads</span><span class="atag">GTFS Transit Feeds</span><span class="atag">EPA Safe Drinking Water</span><span class="atag">EIA Utility Territory Maps</span></div>
+        <div class="agout"><span class="ol">OUTPUT →</span> utilities{}, broadband{}, schools{}, transit_access{}, infrastructure_constraints[]</div>
+      </div>
+    </div>
+    <div class="agcard">
+      <div class="aghead"><span class="agnum">AGENT 06</span><span class="agname">Conceptual Design Agent</span><span class="agbadge">Differentiator</span></div>
+      <div class="agbody">
+        <ul class="agtasks"><li>Ingest all zoning constraints from Agent 01 (setbacks, height limits, FAR, lot coverage maximums)</li><li>Calculate maximum buildable envelope — the legal 3D volume constructable within code</li><li>Generate 3–5 development scenarios (single-family, ADU addition, duplex, ground-up commercial, mixed-use)</li><li>For each scenario: estimated square footage, unit count, rough construction cost range, projected end value</li><li>Prompt AI image generator with constraint-informed architectural prompts for each scenario</li><li>Generate bubble-diagram site plans showing footprint within required setbacks</li><li>Flag clearly: which scenarios are by-right vs. which require a variance application</li></ul>
+        <div class="agapis"><span class="atag">DALL-E 3 API</span><span class="atag">Stable Diffusion API</span><span class="atag">Google Maps Static API</span><span class="atag">RSMeans Cost Data</span><span class="atag">Custom Geometry Engine</span><span class="atag">Mapbox GL (site plans)</span></div>
+        <div class="agout"><span class="ol">OUTPUT →</span> design_scenarios[], rendered_images[], site_plan_diagram, buildable_envelope{}, cost_estimates[]</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout"><span class="clbl">Synthesis Layer</span><p>After all 6 agents report back, a final <strong>Synthesis Agent</strong> (Claude Opus / GPT-4o) receives all structured JSON, resolves conflicts, writes the full narrative report in plain English, identifies the top 5 action recommendations, and hands the complete package to the PDF generation pipeline.</p></div>
+</div></div>
+
+<!-- §4 DATA SOURCES -->
+<div class="sw sd"><div class="section" id="s4">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 04</span></div><h2 class="stitle">Data <em>Sources</em></h2></div>
+  <p class="bt">ParcelIQ draws from free federal APIs, paid commercial data providers, and jurisdiction-specific municipal portals. Every data domain has redundant sources to prevent single-point failure.</p>
+  <div class="sgrid">
+    <div class="scard"><span class="scat">Zoning</span><div class="stitle2">Zoning & Land Use</div><ul class="slist"><li>Regrid.com (parcel data)</li><li>Zoneomics API</li><li>OpenZoning (open-source)</li><li>State GIS portals</li><li>Municipal open data APIs</li><li>Web scraping (fallback)</li><li>AI PDF parsing (legacy codes)</li></ul></div>
+    <div class="scard"><span class="scat">Environmental</span><div class="stitle2">Federal & Environmental</div><ul class="slist"><li>FEMA Flood Map MSC</li><li>EPA Envirofacts API</li><li>FWS IPAC (species)</li><li>USDA Web Soil Survey</li><li>NWI Wetlands Mapper</li><li>EPA Brownfields DB</li><li>FAA Digital-ATIS</li></ul></div>
+    <div class="scard"><span class="scat">Legal</span><div class="stitle2">Property & Legal Records</div><ul class="slist"><li>ATTOM Data Solutions</li><li>CoreLogic</li><li>County Assessor APIs</li><li>NRHP (historic register)</li><li>BuildingPermits.io</li><li>First American DataTree</li><li>Municipal permit portals</li></ul></div>
+    <div class="scard"><span class="scat">Market</span><div class="stitle2">Market & Valuation</div><ul class="slist"><li>Zillow / Zestimate API</li><li>Redfin Data Center</li><li>CoStar (commercial)</li><li>Walk Score API</li><li>US Census ACS API</li><li>BLS Local Area Stats</li><li>RealPage (rental data)</li></ul></div>
+    <div class="scard"><span class="scat">Infrastructure</span><div class="stitle2">Utilities & Access</div><ul class="slist"><li>FCC National Broadband Map</li><li>GreatSchools API</li><li>TIGER/Line Roads</li><li>GTFS Transit Feeds</li><li>NRCS Water Resource DB</li><li>EPA Safe Drinking Water</li><li>EIA Utility Territories</li></ul></div>
+    <div class="scard"><span class="scat">Design & Vision</span><div class="stitle2">Design Generation</div><ul class="slist"><li>Google Maps Static API</li><li>Google Street View API</li><li>DALL-E 3 (OpenAI)</li><li>Stable Diffusion API</li><li>RSMeans cost database</li><li>Custom geometry engine</li><li>Mapbox GL (site diagrams)</li></ul></div>
+    <div class="scard"><span class="scat">Intelligence Layer</span><div class="stitle2">AI / LLM Stack</div><ul class="slist"><li>Claude Opus 4 (synthesis)</li><li>GPT-4o (analysis)</li><li>LangChain / LangGraph</li><li>Embeddings + RAG</li><li>Vector DB (zoning codes)</li><li>PDF parsing (Unstructured.io)</li></ul></div>
+    <div class="scard"><span class="scat">Coverage Strategy</span><div class="stitle2">Zoning Rollout Plan</div><ul class="slist"><li>Phase 1: Top 20 metro areas</li><li>Phase 2: Top 200 US cities</li><li>Phase 3: All 19,500 municipalities</li><li>Fallback: AI scraping + parsing</li><li>"Best available" confidence flag</li><li>Human review queue for gaps</li></ul></div>
+  </div>
+</div></div>
+
+<!-- §5 DELIVERABLE -->
+<div class="sw sdd"><div class="section" id="s5">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 05</span></div><h2 class="stitle">The <em>Deliverable</em></h2></div>
+  <p class="bt">Every report is a professionally formatted, 50+ page PDF delivered directly to the user's email. Structured to be understood by both professionals and first-time buyers — hard data, narrative analysis, visual renders, and concrete action recommendations.</p>
+  <div class="rmock">
+    <div class="rtop">
+      <div><div class="rttitle">ParcelIQ Property Intelligence Report</div><div class="rtsub">123 Main St E, Hampton, NY 11946 · Generated March 25, 2026 · 14m 32s</div></div>
+      <div class="rtpages">52</div>
+    </div>
+    <div class="rsgrid">
+      <div class="rscard"><span class="rsbgn">01</span><div class="rstitle">Executive Summary</div><ul class="rsitems"><li>Property snapshot & parcel map</li><li>Top 5 findings at a glance</li><li>Top 5 recommendations</li><li>Risk flags (red / yellow / green)</li><li>Highest-and-best-use conclusion</li></ul></div>
+      <div class="rscard"><span class="rsbgn">02</span><div class="rstitle">Zoning Analysis</div><ul class="rsitems"><li>Full zoning classification</li><li>Permitted uses by-right</li><li>Conditional uses requiring permit</li><li>Dimensional standards table</li><li>Overlay zones</li><li>Variance opportunities</li></ul></div>
+      <div class="rscard"><span class="rsbgn">03</span><div class="rstitle">Environmental Report</div><ul class="rsitems"><li>FEMA flood zone map & cert</li><li>Flood insurance requirement flag</li><li>Brownfield / Superfund radius</li><li>Wetlands delineation map</li><li>Soil classification</li><li>Endangered species flags</li></ul></div>
+      <div class="rscard"><span class="rsbgn">04</span><div class="rstitle">Legal & Title Intelligence</div><ul class="rsitems"><li>Deed restrictions identified</li><li>All easements mapped</li><li>Historic preservation status</li><li>Open permits & violations</li><li>20-year permit history</li><li>Public lien check</li></ul></div>
+      <div class="rscard"><span class="rsbgn">05</span><div class="rstitle">Market Intelligence</div><ul class="rsitems"><li>Estimated current market value</li><li>6 comparable sales (comps)</li><li>Value per buildable unit</li><li>Under-improvement analysis</li><li>Rental / cap rate estimates</li><li>Neighborhood trend charts</li></ul></div>
+      <div class="rscard"><span class="rsbgn">06</span><div class="rstitle">Infrastructure & Utilities</div><ul class="rsitems"><li>Water / sewer connection status</li><li>Broadband availability</li><li>School district assignment</li><li>Transit access map</li><li>Walkability / bike score</li><li>Emergency response data</li></ul></div>
+      <div class="rscard"><span class="rsbgn">07</span><div class="rstitle">Development Scenarios</div><ul class="rsitems"><li>3–5 by-right build scenarios</li><li>1–2 variance scenarios</li><li>Buildable envelope calculation</li><li>Rough cost estimates per scenario</li><li>Projected end values</li><li>Recommended next steps</li></ul></div>
+      <div class="rscard"><span class="rsbgn">08</span><div class="rstitle">AI Design Renders</div><ul class="rsitems"><li>4–6 AI-generated concept images</li><li>Site plan bubble diagrams</li><li>Street View base + overlay</li><li>Floor plan schematics</li><li>Design narrative per scenario</li></ul></div>
+      <div class="rscard"><span class="rsbgn">09</span><div class="rstitle">Action Recommendations</div><ul class="rsitems"><li>Prioritized action checklist</li><li>Professional referrals needed</li><li>Variance application guidance</li><li>Due diligence checklist</li><li>Next steps by user type</li></ul></div>
+    </div>
+  </div>
+  <div class="callout"><span class="clbl">Confidence Scoring</span><p>Every data point carries a confidence flag: <strong>✓ Verified</strong> (hard API data), <strong>~ Estimated</strong> (model inference), or <strong>⚠ Unverified</strong> (coverage gap). Users always know what is hard data versus AI inference.</p></div>
+</div></div>
+
+<!-- §6 TECH STACK -->
+<div class="sw"><div class="section" id="s6">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 06</span></div><h2 class="stitle">Tech <em>Stack</em></h2></div>
+  <span class="scrl">← swipe to view full table</span>
+  <div class="stwrap">
+    <table class="sttable">
+      <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Frontend</td><td>Next.js + Tailwind</td><td>Address + email landing page. Fast, mobile-first. No login required for basic reports.</td></tr>
+        <tr><td>Backend API</td><td>FastAPI (Python)</td><td>Receives submission, validates address, triggers orchestrator, returns job ID for status polling.</td></tr>
+        <tr><td>Task Queue</td><td>Celery + Redis</td><td>Manages async parallel execution of all 6 agents. Handles retries, timeouts, and failure recovery.</td></tr>
+        <tr><td>Agent Framework</td><td>LangGraph / CrewAI</td><td>Defines the orchestrator-to-agent graph, manages state, handles tool calls and output validation.</td></tr>
+        <tr><td>LLM Intelligence</td><td>Claude Opus + GPT-4o</td><td>Powers synthesis layer, narrative writing, variance analysis, and zoning code interpretation via RAG.</td></tr>
+        <tr><td>Vector Database</td><td>Pinecone / Weaviate</td><td>Stores chunked municipal zoning codes as embeddings. Enables RAG: "what does R-2A allow here?"</td></tr>
+        <tr><td>Image Generation</td><td>DALL-E 3 + Stable Diffusion</td><td>Generates architectural concept renders based on property type and zoning constraints.</td></tr>
+        <tr><td>PDF Generation</td><td>WeasyPrint / ReportLab</td><td>Assembles all report sections, images, maps, and tables into a polished, print-quality PDF.</td></tr>
+        <tr><td>Maps & Imagery</td><td>Google Maps + Mapbox GL</td><td>Aerial images, street view, parcel boundary maps, site plan overlays.</td></tr>
+        <tr><td>Email Delivery</td><td>SendGrid / Postmark</td><td>Branded PDF delivery. Handles delivery, bounce, and open tracking.</td></tr>
+        <tr><td>Database</td><td>PostgreSQL + PostGIS</td><td>All submitted requests, reports, cached parcel data, and user accounts.</td></tr>
+        <tr><td>Hosting</td><td>AWS (ECS + Lambda + S3)</td><td>Container-based API, serverless for light tasks, S3 for PDF and image storage.</td></tr>
+        <tr><td>Monitoring</td><td>Datadog + Sentry</td><td>Agent performance, API errors, report success rates, data quality dashboards.</td></tr>
+        <tr><td>Payments</td><td>Stripe</td><td>Per-report billing and subscription management. One-click checkout before generation.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><span class="clbl">The Zoning RAG Pipeline</span><p>The hardest engineering problem is zoning interpretation. The solution: ingest municipal zoning code PDFs, chunk them, embed into a vector DB, and use RAG to answer questions with source citations. ParcelIQ knows <strong>which municipality's code to retrieve</strong> based on the geocoded address — making the entire process automatic.</p></div>
+</div></div>
+
+<!-- §7 ROADMAP -->
+<div class="sw sd"><div class="section" id="s7">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 07</span></div><h2 class="stitle">Phased <em>Build Plan</em></h2></div>
+  <div class="phgrid">
+    <div class="phcard phactive">
+      <div class="phbgn">01</div>
+      <span class="phey">Phase One — MVP</span>
+      <h3 class="phtitle">Prove the Core</h3>
+      <ul class="phitems"><li>Single metro area (NYC suburbs or South Florida)</li><li>Address input + email landing page</li><li>Zoning Agent + Environmental Agent only</li><li>Basic PDF report (15–20 pages)</li><li>Manual QA on every report</li><li>Stripe payment — $49 per report</li><li>Target: 100 paying customers</li><li>Goal: validate willingness to pay</li></ul>
+      <div class="phtl">0–4 months</div>
+    </div>
+    <div class="phcard">
+      <div class="phbgn">02</div>
+      <span class="phey">Phase Two — Full Product</span>
+      <h3 class="phtitle">All 6 Agents Live</h3>
+      <ul class="phitems"><li>All 6 agents deployed and tested</li><li>Top 20 US metro areas covered</li><li>AI design renders integrated</li><li>Full 50-page PDF output</li><li>User accounts + report history</li><li>API access for brokerages</li><li>Subscription tier launched</li><li>Target: $75K MRR</li></ul>
+      <div class="phtl">4–12 months</div>
+    </div>
+    <div class="phcard">
+      <div class="phbgn">03</div>
+      <span class="phey">Phase Three — Scale</span>
+      <h3 class="phtitle">National & B2B</h3>
+      <ul class="phitems"><li>All 50 states, 200+ cities covered</li><li>White-label product for brokerages</li><li>MLS integration (auto-trigger reports)</li><li>Architect / developer workflow tools</li><li>Conversational Q&A on report data</li><li>Permit application drafting assistant</li><li>Series A fundraise</li><li>Target: $750K MRR</li></ul>
+      <div class="phtl">12–24 months</div>
+    </div>
+  </div>
+  <div class="twocol">
+    <div><span class="clbl">// Phase 1 Headcount</span><p class="bt">1 full-stack engineer (Next.js + FastAPI), 1 AI/ML engineer (LangGraph + API integrations), 1 enterprise sales hire, and 1 part-time QA / real estate domain expert. Four people. Total burn: ~$55K/month.</p></div>
+    <div><span class="clbl">// Definition of Done — Phase 1</span><p class="bt">A real person types a real address, pays $49, and receives a 20-page report within 15 minutes containing information they couldn't have assembled themselves in under 2 days. That is the bar.</p></div>
+  </div>
+</div></div>
+
+<!-- §8 BUSINESS MODEL -->
+<div class="sw"><div class="section" id="s8">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 08</span></div><h2 class="stitle">Business <em>Model</em></h2></div>
+  <div class="prgrid">
+    <div class="tiercard"><span class="tirey">Consumer</span><div class="tiername">Basic Report</div><div class="tierprice">$49</div><div class="tierunit">per report</div><ul class="tierlist"><li>Zoning + environmental only</li><li>15-page PDF report</li><li>Delivered in 15 min</li><li>Residential only</li><li>No account required</li></ul></div>
+    <div class="tiercard trf"><span class="tirey">Most Popular</span><div class="tiername">Full Intelligence</div><div class="tierprice">$149</div><div class="tierunit">per report</div><ul class="tierlist"><li>All 6 agents — complete report</li><li>50+ page PDF with renders</li><li>AI design concepts included</li><li>Residential + commercial</li><li>Full variance analysis</li></ul></div>
+    <div class="tiercard"><span class="tirey">Professional</span><div class="tiername">Pro Subscription</div><div class="tierprice">$299</div><div class="tierunit">per month · 5 reports</div><ul class="tierlist"><li>5 full reports per month</li><li>Report history dashboard</li><li>Custom branding option</li><li>Priority processing</li><li>Basic API access</li></ul></div>
+    <div class="tiercard"><span class="tirey">Enterprise</span><div class="tiername">Brokerage / White Label</div><div class="tierprice">$2K+</div><div class="tierunit">per month · custom volume</div><ul class="tierlist"><li>Unlimited reports</li><li>White-label PDF + portal</li><li>MLS / CRM integration</li><li>Dedicated account management</li><li>Custom data sources</li></ul></div>
+  </div>
+  <div class="mstats">
+    <div class="mstat"><span class="msnum">6M+</span><span class="msdesc">US home sales per year — each a potential report trigger</span></div>
+    <div class="mstat"><span class="msnum">$18B</span><span class="msdesc">US real estate due diligence market — attorneys, consultants, title</span></div>
+    <div class="mstat"><span class="msnum">106K</span><span class="msdesc">Licensed US architects who need this data for every project</span></div>
+    <div class="mstat"><span class="msnum">3M+</span><span class="msdesc">Licensed real estate agents — the highest-value B2B customer</span></div>
+  </div>
+  <hr class="rule"/>
+  <div class="twocol">
+    <div><span class="clbl">// Unit Economics</span><p class="bt">Cost to generate one Full Intelligence report: ~$8–$14 in API costs. At $149, gross margin is ~90%. At 100 reports/day: $14,900/day. Monthly: ~$440K. Annual run rate: ~$5.3M.</p></div>
+    <div><span class="clbl">// The B2B Multiplier</span><p class="bt">A single brokerage with 50 agents ordering 2 reports each per month equals $15,000/month from one customer. Land 10 brokerages: $150K MRR before a single consumer report is sold. With a dedicated sales hire, that target is reachable within 6 months of launch.</p></div>
+  </div>
+</div></div>
+
+<!-- §9 RISKS -->
+<div class="sw sd"><div class="section" id="s9">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 09</span></div><h2 class="stitle">Risk &amp; <em>Mitigation</em></h2></div>
+  <p class="bt">Every investor will ask about these. Here are the real risks and honest mitigations.</p>
+  <span class="scrl">← swipe to view full table</span>
+  <div class="riskwrap">
+    <table class="risktbl">
+      <thead><tr><th>Risk</th><th>Level</th><th>Details</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--ivory);font-weight:500;">Zoning data not nationally available</td><td><span class="rlbl h">High</span></td><td>Many municipalities have no digital zoning data. Coverage gaps unavoidable at scale.</td><td>Phase 1 covers only well-digitized metros. AI scraping pipeline for PDFs. Always show confidence score. Never fabricate — flag gaps explicitly.</td></tr>
+        <tr><td style="color:var(--ivory);font-weight:500;">Legal liability for accuracy</td><td><span class="rlbl h">High</span></td><td>If a user relies on a report and makes a costly mistake, they may pursue legal action.</td><td>Clear ToS: reports are informational, not professional advice. Disclaimer on every page. E&O insurance. Attorney referral upsells create buffer and revenue.</td></tr>
+        <tr><td style="color:var(--ivory);font-weight:500;">AI hallucination in zoning</td><td><span class="rlbl m">Medium</span></td><td>LLMs can misinterpret zoning language or generate rules that don't exist.</td><td>Always cite source for every claim. RAG over actual code text, not model memory. Confidence flags on all LLM-derived content. Human QA queue for flagged reports.</td></tr>
+        <tr><td style="color:var(--ivory);font-weight:500;">API cost creep at scale</td><td><span class="rlbl m">Medium</span></td><td>If API costs rise or reports use more tokens than projected, margins compress.</td><td>Cache all parcel data aggressively — repeat requests on same address cost near zero. Negotiate volume pricing. Real-time cost-per-report monitoring.</td></tr>
+        <tr><td style="color:var(--ivory);font-weight:500;">Zillow / CoStar builds this</td><td><span class="rlbl m">Medium</span></td><td>Large incumbents have data and distribution to replicate the product.</td><td>Speed to market is the moat in year 1. B2B relationships create switching costs. Focus on underserved segments (architects, small developers) that big portals ignore.</td></tr>
+        <tr><td style="color:var(--ivory);font-weight:500;">Data API access revoked</td><td><span class="rlbl l">Low</span></td><td>A commercial data provider could revoke access or change pricing unexpectedly.</td><td>2–3 redundant sources per data type. Never single-vendor dependency. Fallback scrapers for all public-domain data sources maintained continuously.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div></div>
+
+<!-- §10 THE ASK -->
+<div class="sw sdd"><div class="section" id="s10">
+  <div class="sh"><div class="stag"><div class="tline"></div><span class="ttxt">§ 10</span></div><h2 class="stitle">The <em>Ask</em></h2></div>
+  <div class="twocol">
+    <div>
+      <span class="clbl">// Seed Round</span>
+      <p style="font-family:'Cormorant Garamond';font-size:clamp(28px,5vw,44px);font-weight:300;color:var(--champagne);line-height:1.1;margin-bottom:18px;">$1,000,000</p>
+      <p class="bt">Seed round to build Phase 1 through Phase 2 and establish our first enterprise B2B relationships. The raise funds a 3-engineer team, a dedicated enterprise sales hire, 14 months of runway, and meaningful go-to-market investment — giving us time to hit $75K MRR before we need to raise again.</p>
+      <span class="clbl" style="margin-top:20px;">// Use of Funds</span>
+      <ul class="fndlist">
+        <li><span>Engineering (3 engineers, 14 months)</span><span class="fndamt">$560,000</span></li>
+        <li><span>Data API subscriptions (ATTOM, Regrid, etc.)</span><span class="fndamt">$100,000</span></li>
+        <li><span>LLM API costs (dev + early users)</span><span class="fndamt">$80,000</span></li>
+        <li><span>Sales &amp; BD (1 enterprise sales hire)</span><span class="fndamt">$80,000</span></li>
+        <li><span>Legal, incorporation, ToS, E&O insurance</span><span class="fndamt">$50,000</span></li>
+        <li><span>Design, branding &amp; go-to-market</span><span class="fndamt">$60,000</span></li>
+        <li><span>Infrastructure &amp; hosting (AWS)</span><span class="fndamt">$40,000</span></li>
+        <li><span>Reserve / contingency</span><span class="fndamt">$30,000</span></li>
+      </ul>
+    </div>
+    <div>
+      <span class="clbl">// What Investors Get</span>
+      <p class="bt">Equity in a software business with 90%+ gross margins, no inventory, no physical footprint, serving one of the largest asset classes on earth. First-mover in AI-native property intelligence at consumer and professional level.</p>
+      <span class="clbl" style="margin-top:20px;">// 18-Month Milestones</span>
+      <ul class="mstones">
+        <li class="mstone"><span class="msmo">Month 4</span><span class="mstxt"><strong>MVP live.</strong> 100 paying users in 1 metro area.</span></li>
+        <li class="mstone"><span class="msmo">Month 8</span><span class="mstxt"><strong>All 6 agents live.</strong> Top 20 metros covered.</span></li>
+        <li class="mstone"><span class="msmo">Month 12</span><span class="mstxt"><strong>$75K MRR.</strong> First brokerage white-label signed.</span></li>
+        <li class="mstone"><span class="msmo">Month 18</span><span class="mstxt"><strong>$250K MRR.</strong> Series A ready.</span></li>
+      </ul>
+      <div class="callout" style="margin-top:20px;"><span class="clbl">Why Now</span><p>The LLM infrastructure to make this work at the required quality level didn't exist 18 months ago. <strong>It exists today.</strong> The data APIs are mature. The window to build before incumbents wake up is 12–18 months.</p></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="cglow"></div>
+  <div class="cwm">PARCELIQ</div>
+  <div class="cinner">
+    <div class="crule"></div>
+    <h2 class="ch2">The answer to every<br/>property question is<br/><em>already out there.</em><br/>We just go get it.</h2>
+    <p class="cp">ParcelIQ is not a research tool. It's an intelligence platform that makes professional-grade property analysis available to anyone, instantly, at a fraction of the cost. The data exists. The AI exists. The market is enormous. The timing is right.</p>
+    <div class="cbtns">
+      <button class="btng">Request Full Pitch Deck</button>
+      <button class="btno">parceliq.com</button>
+    </div>
+    <div class="crule"></div>
+  </div>
+</div>
+
+</body>
+</html>
